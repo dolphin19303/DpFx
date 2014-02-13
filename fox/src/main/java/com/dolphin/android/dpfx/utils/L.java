@@ -58,7 +58,7 @@ public final class L implements FxConstants {
     }
 
     private static void log(int priority, Throwable ex, String message, Object... args) {
-        if (!releaseMode) return;
+        if (releaseMode) return;
         if (args.length > 0) {
             message = String.format(message, args);
         }
