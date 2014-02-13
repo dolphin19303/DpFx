@@ -11,10 +11,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.dolphin.android.dpfx.FxBaseActivity;
 import com.dolphin.android.dpfx.R;
 import com.dolphin.android.dpfx.adapter.ListDrawerAdapter;
 
-public class StartActivity extends ActionBarActivity {
+public class StartActivity extends FxBaseActivity {
     public DrawerLayout mDrawerLayout;
     public ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -27,7 +28,8 @@ public class StartActivity extends ActionBarActivity {
         initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mMenuListTitles = getResources().getStringArray(R.array.menu_drawer);
@@ -38,20 +40,17 @@ public class StartActivity extends ActionBarActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getActionBar().setTitle(getString(R.string.test_string));
+                getSupportActionBar().setTitle(getString(R.string.test_string));
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(getString(R.string.test_string));
+                getSupportActionBar().setTitle(getString(R.string.test_string));
             }
         };
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
