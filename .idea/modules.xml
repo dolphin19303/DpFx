@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DpFx.iml" filepath="$PROJECT_DIR$/DpFx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fox/fox.iml" filepath="$PROJECT_DIR$/fox/fox.iml" />
+    </modules>
+  </component>
+</project>
+
