@@ -19,7 +19,7 @@ public class ListDrawerAdapter extends ArrayAdapter<String> {
     private final String[] values;
 
     public ListDrawerAdapter(Context context, String[] values) {
-        super(context, R.layout.item_list_drawer, values);
+        super(context, R.layout.item_list_drawer_320, values);
         this.context = context;
         this.values = values;
     }
@@ -28,7 +28,7 @@ public class ListDrawerAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.item_list_drawer, parent, false);
+        View rowView = inflater.inflate(R.layout.item_list_drawer_320, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.txtTitle);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imgIcon);
         textView.setText(values[position]);

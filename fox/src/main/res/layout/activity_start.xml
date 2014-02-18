@@ -3,15 +3,17 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!-- The main content view -->
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <!-- The navigation drawer -->
+
+    <!-- The navigation drawer left -->
     <ListView
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
@@ -19,6 +21,7 @@
         android:dividerHeight="0dp"
         android:background="#111"/>
 
+    <!-- The navigation drawer right -->
     <ListView
         android:id="@+id/right_drawer"
         android:layout_width="240dp"
