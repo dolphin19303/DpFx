@@ -39,7 +39,6 @@ public class ListDrawerAdapter extends ArrayAdapter<String> {
         } else {
             imageView.setImageResource(R.drawable.ic_launcher);
         }
-
         return rowView;
     }
 }

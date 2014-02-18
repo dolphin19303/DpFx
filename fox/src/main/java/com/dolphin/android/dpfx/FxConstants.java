@@ -5,5 +5,4 @@ package com.dolphin.android.dpfx;
  */
 public interface FxConstants {
     public static final boolean releaseMode = false;
-    public static final boolean fakeBilling = true && !releaseMode;
 }

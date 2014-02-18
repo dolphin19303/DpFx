@@ -49,8 +49,11 @@ public class StartActivity extends FxBaseActivity {
                 getSupportActionBar().setTitle(getString(R.string.test_string));
             }
         };
+
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
