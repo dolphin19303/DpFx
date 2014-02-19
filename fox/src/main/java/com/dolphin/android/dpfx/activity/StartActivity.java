@@ -96,6 +96,7 @@ public class StartActivity extends FxBaseActivity {
 
     private void startFragmentMap() {
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         MapFragment fragment = new MapFragment();
