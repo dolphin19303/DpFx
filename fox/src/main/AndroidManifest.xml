@@ -43,13 +43,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".core.SendMockLocationService"
-            android:enabled="true"
-            android:exported="false"
-            android:icon="@drawable/ic_launcher">
-        </service>
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC5H0VOpItBGzpa_WU0VqCr8ydQwfKEIIw"/>

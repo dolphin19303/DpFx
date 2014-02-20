@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/MockLocation" />
             <option value="$PROJECT_DIR$/fox" />
           </set>
         </option>

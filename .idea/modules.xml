@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DpFx.iml" filepath="$PROJECT_DIR$/DpFx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MockLocation/MockLocation.iml" filepath="$PROJECT_DIR$/MockLocation/MockLocation.iml" />
       <module fileurl="file://$PROJECT_DIR$/fox/fox.iml" filepath="$PROJECT_DIR$/fox/fox.iml" />
     </modules>
   </component>

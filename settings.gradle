@@ -1,1 +1,1 @@
-include ':fox'
+include ':fox' , ':MockLocation'
