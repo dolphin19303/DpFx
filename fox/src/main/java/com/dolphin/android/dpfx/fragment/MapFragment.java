@@ -1,5 +1,6 @@
 package com.dolphin.android.dpfx.fragment;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -7,17 +8,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.dolphin.android.dpfx.FxApplication;
 import com.dolphin.android.dpfx.FxBaseFragment;
+import com.dolphin.android.dpfx.FxConstants;
 import com.dolphin.android.dpfx.R;
+import com.dolphin.android.dpfx.bean.FxLocation;
 import com.dolphin.android.dpfx.core.CoreLocation;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by Administrator on 2/18/14.cls
  */
-public class MapFragment extends FxBaseFragment {
+public class MapFragment extends FxBaseFragment implements FxConstants {
     private static String TAG = "MapFragment";
     private static View view;
+
+    //Location manager
     CoreLocation mCoreLocation;
+
+    //Map layer
+    private GoogleMap mMap;
+
+    //Marker
+    Marker mMarkerUser;
 
     //Test button
     Button btnTest1, btnTest2, btnTest3;
@@ -29,9 +46,6 @@ public class MapFragment extends FxBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //init core location
-        mCoreLocation = new CoreLocation(getActivity());
-
-
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
@@ -40,11 +54,25 @@ public class MapFragment extends FxBaseFragment {
             try {
                 view = inflater.inflate(R.layout.fragment_map, container, false);
             } catch (InflateException e) {
-        /* map is already there, just return view as it is */
+                /* map is already there, just return view as it is */
             }
         }
+
+        //Init location manager
+        mCoreLocation = FxApplication.getLocationManager();
+        mCoreLocation.setOnLocationChanged(onLocationChanged);
         mCoreLocation.connectLocationTracking();
 
+        //init view
+        initView();
+
+        return view;
+    }
+
+    //initial view
+    private void initView() {
+        //init map
+        mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         //init test button
         btnTest1 = (Button) view.findViewById(R.id.btnTest1);
         btnTest2 = (Button) view.findViewById(R.id.btnTest2);
@@ -52,7 +80,11 @@ public class MapFragment extends FxBaseFragment {
         btnTest1.setOnClickListener(mTestOnClick);
         btnTest2.setOnClickListener(mTestOnClick);
         btnTest3.setOnClickListener(mTestOnClick);
-        return view;
+
+        mMarkerUser = mMap.addMarker(new MarkerOptions()
+                .position(DEFAULT_LOCATION.getLatLng())
+                .title("Dolphin"));
+
     }
 
     //Action test button
@@ -62,24 +94,25 @@ public class MapFragment extends FxBaseFragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnTest1:
-                    mCoreLocation.connectLocationTracking();
                     break;
                 case R.id.btnTest2:
-//                    mCoreLocation.setMockLocation(mCoreLocation.createLocation(testLocation[iLocation][0], testLocation[iLocation][1], 3.0f));
-//                    L.e(TAG + String.valueOf(testLocation[iLocation][0]) + " " + String.valueOf(testLocation[iLocation][1]));
-//                    iLocation++;
-//                    if (iLocation >= testLocation.length) {
-//                        iLocation = 0;
-//                    }
-
+                    mCoreLocation.startLocationTracking();
                     break;
                 case R.id.btnTest3:
-                    mCoreLocation.startLocationTracking();
+
                     break;
             }
         }
     };
 
+    CoreLocation.onLocationChanged onLocationChanged = new CoreLocation.onLocationChanged() {
+        @Override
+        public void onChanged(FxLocation currentLocation) {
+            if (mMarkerUser != null && currentLocation != null) {
+                mMarkerUser.setPosition(currentLocation.getLatLng());
+            }
+        }
+    };
 
     @Override
     public void onDestroyView() {

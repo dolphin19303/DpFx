@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 
 import com.dolphin.android.dpfx.FxConstants;
+import com.dolphin.android.dpfx.bean.FxLocation;
 import com.dolphin.android.dpfx.utils.L;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -22,6 +23,7 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
 
     Location mCurrentLocation;
 
+    onLocationChanged mOnLocationChanged;
 
     // Milliseconds per second
     private static final int MILLISECONDS_PER_SECOND = 1000;
@@ -79,7 +81,6 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
     //Connection status - connected
     @Override
     public void onConnected(Bundle bundle) {
-        mLocationClient.setMockMode(true);
         L.e(TAG + "Connected");
     }
 
@@ -103,25 +104,23 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
 
     @Override
     public void onLocationChanged(Location location) {
+        notifyLocationChange(new FxLocation(location));
         L.e(TAG + "Location changed: " + location.getLatitude() + " - " + location.getLongitude());
     }
 
-    //Test mock data
-    private static final String PROVIDER = "flp";
-    private static final double LAT = 37.377166;
-    private static final double LNG = -122.086966;
-    private static final float ACCURACY = 3.0f;
-
-    public Location createLocation(double lat, double lng, float accuracy) {
-        // Create a new Location
-        Location newLocation = new Location(PROVIDER);
-        newLocation.setLatitude(lat);
-        newLocation.setLongitude(lng);
-        newLocation.setAccuracy(accuracy);
-        return newLocation;
+    //location changed interface
+    public interface onLocationChanged {
+        void onChanged(FxLocation currentLocation);
     }
 
-    public void setMockLocation(Location lc) {
-        mLocationClient.setMockLocation(lc);
+    //set interface
+    public void setOnLocationChanged(onLocationChanged mOnLocationChanged) {
+        this.mOnLocationChanged = mOnLocationChanged;
+    }
+
+    private void notifyLocationChange(FxLocation location) {
+        if (mOnLocationChanged != null) {
+            mOnLocationChanged.onChanged(location);
+        }
     }
 }
