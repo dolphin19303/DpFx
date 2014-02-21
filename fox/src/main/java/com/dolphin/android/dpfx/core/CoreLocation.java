@@ -21,7 +21,7 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
     LocationClient mLocationClient;
     Context mContext;
 
-    Location mCurrentLocation;
+    FxLocation mCurrentLocation;
 
     onLocationChanged mOnLocationChanged;
 
@@ -97,8 +97,8 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
     }
 
     //get current location
-    public Location getCurrentLocation() {
-        mCurrentLocation = mLocationClient.getLastLocation();
+    public FxLocation getCurrentLocation() {
+        mCurrentLocation = new FxLocation(mLocationClient.getLastLocation());
         return mCurrentLocation;
     }
 

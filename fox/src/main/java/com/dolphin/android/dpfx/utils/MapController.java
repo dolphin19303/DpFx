@@ -59,6 +59,10 @@ public class MapController {
         return (int) mMap.getCameraPosition().zoom;
     }
 
+    //reset map
+    public void reset() {
+    }
+
     public interface MapControllerCameraCallBack {
         public void onAnimationComplete();
     }

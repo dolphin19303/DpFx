@@ -39,6 +39,9 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
     //Marker
     Marker mMarkerUser;
 
+    //Current location button
+    Button btnCurrentLocation;
+    int currentLocationStatus;
     //Test button
     Button btnTest1, btnTest2, btnTest3;
 
@@ -75,6 +78,8 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
     //initial view
     private void initView() {
 
+        btnCurrentLocation = (Button) view.findViewById(R.id.btnCurrentLocation);
+        btnCurrentLocation.setOnClickListener(onButtonClick);
         //init test button
         btnTest1 = (Button) view.findViewById(R.id.btnTest1);
         btnTest2 = (Button) view.findViewById(R.id.btnTest2);
@@ -89,10 +94,9 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
     private void initMap() {
         //init map
         mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        mMap.setMyLocationEnabled(true);
 
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
 
         //set controller for map
         mMapController = new MapController(mMap);
@@ -122,6 +126,37 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
                     break;
                 case R.id.btnTest3:
                     T.show("Zoom Level: " + mMapController.getCurrentZoomLevel());
+                    break;
+            }
+        }
+    };
+    View.OnClickListener onButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btnCurrentLocation:
+                    currentLocationStatus++;
+                    if (currentLocationStatus > 3) {
+                        currentLocationStatus = 0;
+                    }
+                    switch (currentLocationStatus) {
+                        case 0:
+                            btnCurrentLocation.setText("X");
+                            mMapController.reset();
+                            break;
+                        case 1:
+                            btnCurrentLocation.setText("Y");
+                            mMapController.AnimateTo(mCoreLocation.getCurrentLocation(), DEFAULT_ANIMATE_TIME, DEFAULT_ZOOM_LEVEL, null);
+                            break;
+                        case 2:
+                            btnCurrentLocation.setText("Z");
+                            mCoreLocation.startLocationTracking();
+                            break;
+                        case 3:
+                            btnCurrentLocation.setText("T");
+//                            mCoreLocation.startLocationTracking();
+                            break;
+                    }
                     break;
             }
         }
