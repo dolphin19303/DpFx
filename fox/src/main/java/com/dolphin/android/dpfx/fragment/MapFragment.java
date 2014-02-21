@@ -14,6 +14,8 @@ import com.dolphin.android.dpfx.FxConstants;
 import com.dolphin.android.dpfx.R;
 import com.dolphin.android.dpfx.bean.FxLocation;
 import com.dolphin.android.dpfx.core.CoreLocation;
+import com.dolphin.android.dpfx.utils.MapController;
+import com.dolphin.android.dpfx.utils.T;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,6 +34,7 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
 
     //Map layer
     private GoogleMap mMap;
+    private MapController mMapController;
 
     //Marker
     Marker mMarkerUser;
@@ -65,14 +68,13 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
 
         //init view
         initView();
-
+        initMap();
         return view;
     }
 
     //initial view
     private void initView() {
-        //init map
-        mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+
         //init test button
         btnTest1 = (Button) view.findViewById(R.id.btnTest1);
         btnTest2 = (Button) view.findViewById(R.id.btnTest2);
@@ -81,10 +83,30 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
         btnTest2.setOnClickListener(mTestOnClick);
         btnTest3.setOnClickListener(mTestOnClick);
 
+
+    }
+
+    private void initMap() {
+        //init map
+        mMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        mMap.setMyLocationEnabled(true);
+
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+
+        //set controller for map
+        mMapController = new MapController(mMap);
+
         mMarkerUser = mMap.addMarker(new MarkerOptions()
                 .position(DEFAULT_LOCATION.getLatLng())
                 .title("Dolphin"));
 
+        mMapController.AnimateTo(DEFAULT_LOCATION, 2000, 17, new MapController.MapControllerCallBack() {
+            @Override
+            public void onAnimationComplete() {
+                T.show("Complete");
+            }
+        });
     }
 
     //Action test button
@@ -99,7 +121,6 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
                     mCoreLocation.startLocationTracking();
                     break;
                 case R.id.btnTest3:
-
                     break;
             }
         }
