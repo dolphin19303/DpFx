@@ -101,7 +101,7 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
                 .position(DEFAULT_LOCATION.getLatLng())
                 .title("Dolphin"));
 
-        mMapController.AnimateTo(DEFAULT_LOCATION, 2000, 17, new MapController.MapControllerCallBack() {
+        mMapController.AnimateTo(DEFAULT_LOCATION, DEFAULT_ANIMATE_TIME, DEFAULT_ZOOM_LEVEL, new MapController.MapControllerCameraCallBack() {
             @Override
             public void onAnimationComplete() {
                 T.show("Complete");
@@ -121,6 +121,7 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
                     mCoreLocation.startLocationTracking();
                     break;
                 case R.id.btnTest3:
+                    T.show("Zoom Level: " + mMapController.getCurrentZoomLevel());
                     break;
             }
         }
@@ -131,6 +132,12 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
         public void onChanged(FxLocation currentLocation) {
             if (mMarkerUser != null && currentLocation != null) {
                 mMarkerUser.setPosition(currentLocation.getLatLng());
+                mMapController.AnimateTo(currentLocation, DEFAULT_ANIMATE_TIME, DEFAULT_ZOOM_LEVEL, new MapController.MapControllerCameraCallBack() {
+                    @Override
+                    public void onAnimationComplete() {
+                        T.show("Moving!");
+                    }
+                });
             }
         }
     };

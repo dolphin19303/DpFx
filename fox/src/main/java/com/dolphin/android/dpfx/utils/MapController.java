@@ -11,7 +11,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 public class MapController {
     private static final String TAG = "MapController";
     GoogleMap mMap;
-    MapControllerCameraCallBack mapControllerCallBack;
+    //Current zoom level
+    private int currentZoomLevel;
 
     public MapController(GoogleMap map) {
         if (map != null) {
@@ -22,12 +23,16 @@ public class MapController {
     }
 
     public void AnimateTo(FxLocation location, int time, int zoomLevel, final MapControllerCameraCallBack mapControllerCallBack) {
+        if (!(zoomLevel > mMap.getMaxZoomLevel() || zoomLevel < mMap.getMinZoomLevel())) {
+            currentZoomLevel = zoomLevel;
+        }
         try {
+
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(location.getLatLng())      // Sets the center of the map to Mountain View
-                    .zoom(zoomLevel)                   // Sets the zoom
-                    .bearing(90)                // Sets the orientation of the camera to east
-                    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                    .zoom(currentZoomLevel)                   // Sets the zoom
+//                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(45)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), time, new GoogleMap.CancelableCallback() {
                 @Override
@@ -48,6 +53,10 @@ public class MapController {
     }
 
     public void MoveTo() {
+    }
+
+    public int getCurrentZoomLevel() {
+        return (int) mMap.getCameraPosition().zoom;
     }
 
     public interface MapControllerCameraCallBack {
