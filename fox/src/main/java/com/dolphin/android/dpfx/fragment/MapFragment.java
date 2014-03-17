@@ -67,7 +67,16 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
         //Init location manager
         mCoreLocation = FxApplication.getLocationManager();
         mCoreLocation.setOnLocationChanged(onLocationChanged);
-        mCoreLocation.connectLocationTracking();
+        mCoreLocation.connectLocationTracking(new CoreLocation.CoreLocationListener() {
+            @Override
+            public void onConnected() {
+                mCoreLocation.startLocationTracking();
+            }
+
+            @Override
+            public void onDisconnected() {
+            }
+        });
 
         //init view
         initView();
@@ -154,7 +163,7 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
                             break;
                         case 3:
                             btnCurrentLocation.setText("T");
-//                            mCoreLocation.startLocationTracking();
+                            mCoreLocation.startLocationTracking();
                             break;
                     }
                     break;
@@ -166,6 +175,7 @@ public class MapFragment extends FxBaseFragment implements FxConstants {
         @Override
         public void onChanged(FxLocation currentLocation) {
             if (mMarkerUser != null && currentLocation != null) {
+                T.show(currentLocation.getLatitude() + " - " + currentLocation.getLongitude());
                 mMarkerUser.setPosition(currentLocation.getLatLng());
                 mMapController.AnimateTo(currentLocation, DEFAULT_ANIMATE_TIME, DEFAULT_ZOOM_LEVEL, new MapController.MapControllerCameraCallBack() {
                     @Override

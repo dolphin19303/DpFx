@@ -24,6 +24,7 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
     FxLocation mCurrentLocation;
 
     onLocationChanged mOnLocationChanged;
+    CoreLocationListener mCoreLocationListener;
 
     // Milliseconds per second
     private static final int MILLISECONDS_PER_SECOND = 1000;
@@ -56,16 +57,23 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
     }
 
-    public void connectLocationTracking() {
-        mLocationClient.connect();
-        L.e(TAG + "Connecting");
+    public void connectLocationTracking(CoreLocationListener mCoreLocationListener) {
+        if (mLocationClient != null) {
+            this.mCoreLocationListener = mCoreLocationListener;
+            mLocationClient.connect();
+        }
     }
 
-    public void disconnectLocationTracking() {
-        mLocationClient.disconnect();
+    public void disconnectLocationTracking(CoreLocationListener mCoreLocationListener) {
+
+        if (mLocationClient != null) {
+            this.mCoreLocationListener = mCoreLocationListener;
+            mLocationClient.disconnect();
+        }
     }
 
     public void startLocationTracking() {
+
         if (mLocationClient.isConnected()) {
             L.e(TAG + "Start tracking");
             mLocationClient.requestLocationUpdates(mLocationRequest, this);
@@ -81,13 +89,17 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
     //Connection status - connected
     @Override
     public void onConnected(Bundle bundle) {
-        L.e(TAG + "Connected");
+        if (mCoreLocationListener != null) {
+            mCoreLocationListener.onConnected();
+        }
     }
 
     //Connection status - disconnected
     @Override
     public void onDisconnected() {
-
+        if (mCoreLocationListener != null) {
+            mCoreLocationListener.onDisconnected();
+        }
     }
 
     //Connection status - failed
@@ -122,5 +134,10 @@ public class CoreLocation implements FxConstants, GooglePlayServicesClient.Conne
         if (mOnLocationChanged != null) {
             mOnLocationChanged.onChanged(location);
         }
+    }
+
+    public interface CoreLocationListener {
+        public void onConnected();
+        public void onDisconnected();
     }
 }
